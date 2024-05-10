@@ -3,9 +3,6 @@
 ├── dist/
 ├── site/
 ├── src/
-│   ├── backup/
-│   ├── deploy/
-│   ├── generate/
 │   ├── helpers/
 └── tests/
 ```

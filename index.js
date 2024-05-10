@@ -3,20 +3,15 @@ const fs = require('fs-extra');
 require('dotenv').config();
 const {program} = require('commander');
 
+const {backup} = require('./src/backup');
+const {deploy} = require('./src/deploy');
+const {generate} = require('./src/generate');
+
 const jsonPath = path.join(__dirname, '/site/site.json');
 const localDistFolder = path.join(__dirname/*, '..'*/, '/dist/');
 
 console.log(jsonPath);
 console.log(localDistFolder);
-function backup() {
-  console.log("CREATING A BACKUP!");
-}
-function generate() {
-  console.log("SITE GENERATED!");
-}
-function deploy() {
-  console.log("DEPLOYING VIA FTP!");
-}
 
 program
   .option('-b, --backup', 'Backup the dist folder')
@@ -43,3 +38,19 @@ optionsOrder.forEach(option => {
     actionsMap[option]();
   }
 });
+
+function optionInstructions(program) {
+  for (let i = 0; i < program.options.length; i++) {
+    const opt = program.options[i];
+    console.log(opt.flags);
+    console.log(opt.description);
+  }
+}
+
+//console.log(process.argv.length);
+
+if (process.argv.length === 2) {
+  console.error('Error! No arguments provided !!!');
+  optionInstructions(program);
+  process.exit(1);
+}
