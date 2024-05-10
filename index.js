@@ -1,5 +1,3 @@
-const path = require('path');
-const fs = require('fs-extra');
 require('dotenv').config();
 const {program} = require('commander');
 const colors = require('colors');
@@ -7,12 +5,6 @@ const colors = require('colors');
 const {backup} = require('./src/backup');
 const {deploy} = require('./src/deploy');
 const {generate} = require('./src/generate');
-
-const jsonPath = path.join(__dirname, '/site/site.json');
-const localDistFolder = path.join(__dirname/*, '..'*/, '/dist/');
-
-console.log(jsonPath);
-console.log(localDistFolder);
 
 program
   .option('-b, --backup', 'Backup the dist folder')
@@ -24,7 +16,6 @@ program
 // We want to process the option arguments in the same order as user has inserted them
 // this makes the application more flexible in case we add additional features in the future.
 const optionsOrder = process.argv.filter(arg => ['-b', '--backup', '-g', '--generate', '-d', '--deploy', '-h', '--help'].includes(arg));
-const options = program.opts();
 
 const actionsMap = {
   '-b': backup,

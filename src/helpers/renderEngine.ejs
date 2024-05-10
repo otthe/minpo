@@ -1,0 +1,21 @@
+<% function renderContent(rendering, pages) { %>
+  <!--INDEX PAGE-->
+  <% if (rendering === "index") { %>
+    <h1>Index page</h1>
+  <% } %>
+
+  <!--BLOG PAGE-->
+  <% if (rendering === "blog") { %>
+    <%- include('partials/blog.ejs') %>
+  <% } %>
+
+  <!--BLOG SUBPAGES-->
+  <% if (rendering.startsWith("blog_subpages_")) { %>
+    <% for (let i = 0; i < pages.blog.subpages.length; i++) { %>
+      <% if (rendering === "blog_subpages_" + i) { %>
+        <% let subpage = pages.blog.subpages[i]; %>
+        <%- include('partials/post.ejs', { subpage }) %>
+      <% } %>
+    <% } %>
+  <% } %>
+<% } %>

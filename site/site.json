@@ -1,0 +1,41 @@
+{
+  "site_title": "Otto Heiskanen",
+  "site_author": "Otto Heiskanen",
+  "email": "contact@ottoheiskanen.com",
+
+  "socials": {
+    "Github": "",
+    "LinkedIn": "",
+    "Twitter": ""
+  },
+
+  "pages": {
+
+    "index": {
+      "active":true,
+      "header": {
+        "title": "My Portfolio",
+        "desc": "This site is still in the making"
+      }
+    },
+
+    "blog": {
+      "active":true,
+      "header": {
+        "title": "My Tech blog",
+        "desc": "Some opinions"
+      },
+      "subpages": [
+        {
+          "active": true,
+          "asd":"asd"
+        },
+        {
+          "active": false,
+          "asd":"asd"
+        }
+      ]
+    }
+
+  }
+}
