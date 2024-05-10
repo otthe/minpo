@@ -3,7 +3,7 @@
 ├── dist/
 ├── site/
 ├── src/
-│   ├── helpers/
+│   └── helpers/
 └── tests/
 ```
 
