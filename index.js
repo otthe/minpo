@@ -1,6 +1,6 @@
 require('dotenv').config();
 const {program} = require('commander');
-const colors = require('colors');
+require('colors');
 
 const {backup} = require('./src/backup');
 const {deploy} = require('./src/deploy');
@@ -13,8 +13,7 @@ program
   .option('-h, --help', 'Lists all the available option arguments')
   .parse(process.argv);
 
-// We want to process the option arguments in the same order as user has inserted them
-// this makes the application more flexible in case we add additional features in the future.
+// Process the option arguments in the same order as they are inserted into the CLI
 const optionsOrder = process.argv.filter(arg => ['-b', '--backup', '-g', '--generate', '-d', '--deploy', '-h', '--help'].includes(arg));
 
 const actionsMap = {
@@ -39,8 +38,6 @@ function optionInstructions(program) {
   });
 }
 
-// Safety function to make sure that each action is executed in correct order
-// despite it being asynchronous or not
 async function executeInOrder() {
   for (const opt of optionsOrder) {
     if (actionsMap[opt]) {

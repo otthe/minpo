@@ -35,8 +35,6 @@ test('site.json can be found and opened, pages are defined', () => {
 
   const pages = json.pages;
   expect(pages).toBeDefined();
-
-  console.log(pages);
 });
 
 test('site.json has pages; pages and possible subpages have "active" boolean', () => {
@@ -49,10 +47,11 @@ test('site.json has pages; pages and possible subpages have "active" boolean', (
     expect(pages[key].active).toBeDefined();
     expect(typeof pages[key].active).toBe("boolean");
 
+    expect(key.length).toBeGreaterThan(0);
+
     //if subpages exists, go through them and make sure active variable is found
     if (pages[key].subpages && pages[key].subpages.length > 0) {
       const subpages = pages[key].subpages;
-      console.log(subpages);
 
       Object.keys(subpages).forEach(function(sb) {
         expect(subpages[sb]).toBeDefined();
@@ -60,7 +59,5 @@ test('site.json has pages; pages and possible subpages have "active" boolean', (
         expect(typeof subpages[sb].active).toBe("boolean");
       })
     }
-
   });
-
 });

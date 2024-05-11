@@ -11,11 +11,11 @@
   <div id="container">
 
     <div id="content">
+
       <%- include('partials/nav.ejs') %>
   
-      <div id="main">
-
-      </div>
+      <!-- renderEngine will autoinsert all the pages here -->
+      <%- include('../src/helpers/renderEngine.ejs') %>
 
       <%- include('partials/footer.ejs') %>
 
