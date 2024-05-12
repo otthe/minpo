@@ -1,5 +1,6 @@
 <!--YOU SHOULD NOT HAVE TO TOUCH THIS FILE. 
   NEED TO FIND OUT WHY IT CAN'T BE PLACED ELSEWHERE
+  (MAYBE SOMETHING TO DO WITH EJS DEFAULT PATHING??)
 -->
 
 <% function renderContent() { %>
@@ -7,16 +8,38 @@
   <% Object.keys(pages).forEach(function(key){ %>
 
     <% if (pages[key].active && rendering === key) { %>
+
       <% const path = `./views/${key}.ejs` %>
-      <%- include(path) %>
+      <% const page = pages[key]; %>
+      <%- include(path, {page}) %>
+
+      <% if (pages[key].subpages) { %>
+        <% renderSubpages(key); %>
+      <% } %>
+
     <% } %>
 
   <% }); %>
 
 <% } %>
 
+<% function renderSubpages(key) {%>
 
-<% function renderSubpages() {%>
+  <% if (!pages[key].subpages) { %>
+    <% return; %>
+  <% } %>
+
+  <% if (rendering.startsWith(`${key}_subpages_`)) { %>
+    <% for( let i = 0; i < pages[key].subpages.length; i++ ) { %>
+      <% console.log("gets here!") %>
+      <% if (rendering === `${key}_subpages_${i}`) { %>
+        <% const subpagePath = `./views/${key}_subpage.ejs`; %>
+        <% const subpage = pages[key].subpages[i]; %>
+        <%- include(subpagePath, {subpage}); %>
+      <% } %>
+
+    <% } %>
+  <% } %>
 
 <% } %>
 

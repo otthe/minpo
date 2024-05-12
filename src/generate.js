@@ -44,9 +44,14 @@ function setBaseUrl(location, devMode) {
   return route;
 }
 
-async function generate() {
+async function generate() {  
   const siteData = fs.readJsonSync(jsonPath);
+
+  siteData.base_url = setBaseUrl(process.env.FTP_PUBLIC_FOLDER, process.env.LOCALHOST);
+
   const pages = siteData.pages;
+
+  await fs.emptyDir(localDistFolder);
 
   await iteratePages(siteData, pages);
 }
@@ -55,10 +60,31 @@ async function iteratePages(siteData, pages) {
   for (const [key, page] of Object.entries(pages)) {
     if (page.active) {
         siteData.rendering = key;
-        siteData.base_url = setBaseUrl(process.env.FTP_PUBLIC_FOLDER, process.env.LOCALHOST);
-
         // how to make the shortage available to "page[key]"".ejs??
         renderPage(key, siteData, localDistFolder);
+
+        if (page.subpages && Array.isArray(page.subpages)) {
+          const localDistSubfolder = localDistFolder + key + "/";
+          console.log(localDistSubfolder);
+          try {
+            
+            await fs.mkdirSync(localDistSubfolder);
+
+            for (let i = 0; i < page.subpages.length; i++) {
+              const subpage = page.subpages[i];
+              if (subpage.active) {
+                siteData.rendering = `${key}_subpages_${i}`;
+                console.log(siteData.rendering);
+
+                renderPage(key, siteData, `${localDistSubfolder}${i}`);
+              }
+            }
+
+          } catch (error) {
+            console.log(`error while generating subpages: ` ,  error);
+          }
+        }
+
       }
   }
 
