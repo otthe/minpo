@@ -29,7 +29,6 @@
 
   <% if (rendering.startsWith(`${key}_subpages_`)) { %>
     <% for( let i = 0; i < pages[key].subpages.length; i++ ) { %>
-      <% console.log("gets here!") %>
       <% if (rendering === `${key}_subpages_${i}`) { %>
         <% const subpagePath = `./views/${key}_subpage.ejs`; %>
         <% const subpage = pages[key].subpages[i]; %>

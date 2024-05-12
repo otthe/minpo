@@ -23,6 +23,12 @@ const minifyConfig = {
   minifyCSS: true
 }
 
+/**
+ * Needed to set the <base> tag correctly to make links work correctly
+ * @param {*} location Refers to target folder on FTP server
+ * @param {*} devMode So we don't directly upload to localhost but to localhost/minpo
+ * @returns 
+ */
 function setBaseUrl(location, devMode) {
   let route = "/";
   
@@ -44,6 +50,9 @@ function setBaseUrl(location, devMode) {
   return route;
 }
 
+/**
+ * Starts the execution of generating process
+ */
 async function generate() {  
   const siteData = fs.readJsonSync(jsonPath);
 
@@ -56,11 +65,17 @@ async function generate() {
   await iteratePages(siteData, pages);
 }
 
+/**
+ * Goes through all the pages in site.json including subpages.
+ * If the page happens to be active, it will get rendered into an equivalent HTML file located in dist folder.
+ * @param {*} siteData Content of site.json
+ * @param {*} pages Same as siteData.pages
+ */
 async function iteratePages(siteData, pages) {
   for (const [key, page] of Object.entries(pages)) {
     if (page.active) {
         siteData.rendering = key;
-        // how to make the shortage available to "page[key]"".ejs??
+        
         renderPage(key, siteData, localDistFolder);
 
         if (page.subpages && Array.isArray(page.subpages)) {
@@ -90,16 +105,28 @@ async function iteratePages(siteData, pages) {
 
 }
 
+/**
+ * Writes and minifies the page into an HTML file
+ * @param {*} key Key-value for pages[key] in site.json
+ * @param {*} data All the data declared in site.json
+ * @param {*} localDistFolder Path to the local dist folder
+ */
 function renderPage(key, data, localDistFolder) {
   ejs.renderFile(templatePath, data, {}, function(error, html) {
     if (error) {
       console.error(`error rendering ${key} page: `, error);
       return;
     }
-    //minify html
+    
     html = minify(html, minifyConfig);
     fs.writeFileSync(`${localDistFolder}${key}.html`, html);
   });
+}
+
+// we choose to create the missing views (just empty html files)
+// this way renderEngine doesn't have to throw an error when it tries to render missing view
+async function confirmViews() {
+
 }
 
 module.exports = {generate, setBaseUrl}

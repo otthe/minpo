@@ -61,3 +61,23 @@ test('site.json has pages; pages and possible subpages have "active" boolean', (
     }
   });
 });
+
+test('there should be view for every page and subpage defined in the site.json', () => {
+  const jsonPath = path.join(__dirname, '..', '/site/', 'site.json');
+  const json = fs.readJsonSync(jsonPath);
+  const pages = json.pages;
+
+  // pages
+  Object.keys(pages).forEach(function(key) {
+    const view = path.join(__dirname, '..', '/site/views/', `${key}.ejs`);
+    const viewExists = fs.existsSync(view);
+    expect(viewExists).toBe(true);
+
+    //subpages
+    if (pages[key].subpages && Array.isArray(pages[key].subpages)) {
+      //we just check if "key_subpage" view is defined if not, we create it
+    }
+
+  });
+
+});
