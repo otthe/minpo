@@ -1,0 +1,24 @@
+<!--YOU SHOULD NOT HAVE TO TOUCH THIS FILE. 
+  NEED TO FIND OUT WHY IT CAN'T BE PLACED ELSEWHERE
+-->
+
+<% function renderContent() { %>
+
+  <% Object.keys(pages).forEach(function(key){ %>
+
+    <% if (pages[key].active && rendering === key) { %>
+      <% const path = `./views/${key}.ejs` %>
+      <%- include(path) %>
+    <% } %>
+
+  <% }); %>
+
+<% } %>
+
+
+<% function renderSubpages() {%>
+
+<% } %>
+
+<% renderContent() %>
+
