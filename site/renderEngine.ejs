@@ -6,17 +6,15 @@
 <% function renderContent() { %>
 
   <% Object.keys(pages).forEach(function(key){ %>
-
     <% if (pages[key].active && rendering === key) { %>
 
       <% const path = `./views/${key}.ejs` %>
       <% const page = pages[key]; %>
       <%- include(path, {page}) %>
+    <% } %>
 
-      <% if (pages[key].subpages) { %>
-        <% renderSubpages(key); %>
-      <% } %>
-
+    <% if (pages[key].subpages) { %>
+      <% renderSubpages(key); %>
     <% } %>
 
   <% }); %>
