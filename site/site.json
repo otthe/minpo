@@ -20,7 +20,8 @@
     },
 
     "contact":{
-      "active":true
+      "active":true,
+      "subpages":[]
     },
 
     "blog": {

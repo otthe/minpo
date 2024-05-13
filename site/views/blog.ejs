@@ -1,3 +1,16 @@
 <h1>
   <%= page.header.title  %>
+
+  <ul>
+
+    <% for( let i = 0; i < page.subpages.length; i++ ) { %>
+
+      <% if (page.subpages[i].active) { %>
+        <li><a href="/blog/<%= i + ".html" %>"><%= page.subpages[i].title %></a></li>
+      <% } %>
+
+    <% } %>
+
+  </ul>
+
 </h1>
