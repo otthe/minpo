@@ -207,7 +207,11 @@
     "yocto-queue": "^0.1.0"
   },
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "generate": "node index -g",
+    "deploy": "node index -d",
+    "backup": "node index -b",
+    "ship": "node index -b -g -d"
   },
   "keywords": [],
   "author": "",

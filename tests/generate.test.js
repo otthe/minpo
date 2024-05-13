@@ -1,25 +1,35 @@
-const generate = require('../src/generate');
+const {generate, confirmViewExistence, setBaseUrl} = require('../src/generate');
 const path = require('path');
 const fs = require('fs-extra');
 require('dotenv').config();
 
-//might be enough to test all folders only here since all the scripts
-//needing these paths are on the same folder level
-test('finds correct files and folders', () => {
+// location and existence might not need to be run elsewhere since they are used on same folder level everywhere
+test('find template', () => {
   const template = path.join(__dirname, '..', '/site/', 'template.ejs');
-  const dist = path.join(__dirname, '..', '/dist/');
-  const imgs = path.join(__dirname, '..', '/site/images/');
-  const layouts = path.join(__dirname, '..', '/site/layouts/');
-
   const templateExists = fs.existsSync(template);
   expect(templateExists).toBe(true);
+});
 
+test('regex function test', () => {
+  const regex = /test/;
+  const result = regex.exec("test string");
+  expect(result[0]).toBe("test");
+});
+
+test('dist folder exists', () => {
+  const dist = path.join(__dirname, '..', '/dist/');
   const distExists = fs.existsSync(dist);
   expect(distExists).toBe(true);
+});
 
+test('img folder exists', () => {
+  const imgs = path.join(__dirname, '..', '/site/images/');
   const imgsExists = fs.existsSync(imgs);
   expect(imgsExists).toBe(true);
+});
 
+test('layouts folder exists', () => {
+  const layouts = path.join(__dirname, '..', '/site/layouts/');
   const layoutsExists = fs.existsSync(layouts);
   expect(layoutsExists).toBe(true);
 });
@@ -76,8 +86,15 @@ test('there should be view for every page and subpage defined in the site.json',
     //subpages
     if (pages[key].subpages && Array.isArray(pages[key].subpages)) {
       //we just check if "key_subpage" view is defined if not, we create it
+      const subpageView = path.join(__dirname, '..', '/site/views/', `${key}_subpage.ejs`);
+      const subpageViewExists = fs.existsSync(subpageView);
+      expect(subpageViewExists).toBe(true);
     }
 
   });
 
 });
+
+// test('confirmViewExistence should create all the missing views',async () => {
+//   expect( await confirmViewExistence() ).toBeDefined();
+// });

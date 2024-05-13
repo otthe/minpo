@@ -6,6 +6,9 @@ const {backup} = require('./src/backup');
 const {deploy} = require('./src/deploy');
 const {generate} = require('./src/generate');
 
+// if you chain multiple options, the call order will determine the execution order
+// the most safest way is to call -b -g -d
+// (backup previous dist) (generate new dist) (deploy new dist)
 program
   .option('-b, --backup', 'Backup the dist folder')
   .option('-g, --generate', 'Generate the site to dist folder')
