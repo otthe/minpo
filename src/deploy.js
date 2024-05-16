@@ -36,9 +36,72 @@ async function deploy() {
   client.connect(config);
 }
 
-async function ensureRemoteDir() {
-
+async function ensureRemoteDir(client, remoteDir) {
+  return new Promise((resolve, reject) => {
+    client.mkdir(remoteDir, true, (err) => {
+      if (err) reject(err);
+      resolve();
+    });
+  });
 }
 
+async function clearRemoteDir(client, remoteDir, baseDir) {
+  
+  console.log(`checking directory: ${remoteDir}`);
+
+  return new Promise((resolve, reject) => {
+    client.list(remoteDir, (err, list) => {
+      if (err){
+        console.log(`Error listing directory ${remoteDir}: ${err.message}`);
+        if (err.code === 550) {
+          console.log(`Directory ${remoteDir} not found.`);
+          resolve();
+          return;
+        }
+        reject(err);
+        return;
+      }
+
+      let total = list.length;
+      console.log(`found ${total} items in ${remoteDir}`);
+      if (total === 0) {
+        resolve();
+        return;
+      }
+
+      list.forEach(async (item) => {
+        const remotePath = path.join(remoteDir, item.name);
+        console.log(`processing ${item.type === 'd' ? 'directory' : 'file'}: ${remotePath}`); 
+
+        if (item.type === 'd') {
+          await clearRemoteDir(client, remotePath, baseDir); //recursive call
+          client.rmdir(remotePath, true, (err) => {
+            if (err) {
+              console.log(`failed to remove dir ${remotePath}: ${err.message}`);
+              reject(err);
+              return;
+            }
+
+            if (--total === 0) resolve();
+
+          });
+        } else {
+          client.delete(remotePath, (err) => {
+            if (err) {
+              console.log(`faoöed to delete file ${remotePath}: ${err.message}`);
+              reject(err);
+              return;
+            }
+            if (--total === 0) resolve();
+          });
+        }
+      });
+    });
+  });
+}
+
+async function uploadToRemoteDir() {
+
+}
 
 module.exports = {deploy}

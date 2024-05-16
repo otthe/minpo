@@ -20,14 +20,14 @@ program
 const optionsOrder = process.argv.filter(arg => ['-b', '--backup', '-g', '--generate', '-d', '--deploy', '-h', '--help'].includes(arg));
 
 const actionsMap = {
-  '-b': backup,
-  '--backup': backup,
-  '-g': generate,
-  '--generate': generate,
-  '-d': deploy,
-  '--deploy': deploy,
-  '-h': () => optionInstructions(program),
-  '--help': () => optionInstructions(program),
+  '-b':             backup,
+  '--backup':       backup,
+  '-g':             generate,
+  '--generate':     generate,
+  '-d':             deploy,
+  '--deploy':       deploy,
+  '-h': () =>       optionInstructions(program),
+  '--help': () =>   optionInstructions(program),
 };
 
 function optionInstructions(program) {
