@@ -1,5 +1,6 @@
 const backup = require('../src/backup');
 
-test('finds correct folder', () => {
-  
-});
+// test('generates an timestamp', () => {
+//   const d = new Date();
+//   console.log(d.getMilliseconds());
+// });

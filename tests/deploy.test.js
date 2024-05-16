@@ -21,7 +21,7 @@ async function listAll() {
           c.end();
           reject(err);
         }else {
-          console.dir(list);
+          //console.dir(list);
           c.end();
           resolve(true);
         }

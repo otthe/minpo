@@ -1,9 +1,10 @@
 const path = require('path');
 const fs = require('fs-extra');
 require('dotenv').config();
+const {parseSlashes} = require('./helpers/strings.js');
 
 const localDistFolder = path.join(__dirname, '..', '/dist/');
-const remoteDistFolder = String(process.env.FTP_PUBLIC_FOLDER);
+const remoteDistFolder = process.env.FTP_PUBLIC_FOLDER//String(process.env.FTP_PUBLIC_FOLDER);
 
 const config = {
   host: process.env.FTP_HOST,
@@ -24,8 +25,8 @@ async function deploy() {
 
   await client.on('ready', async function(){
     try {
-      await ensureRemoteDir(client, remoteDistFolder); // which one should be called first?
       await clearRemoteDir(client, remoteDistFolder);
+      await ensureRemoteDir(client, remoteDistFolder); // which one should be called first?
       await uploadToRemoteDir(client, localDistFolder, remoteDistFolder);
     } catch (error) {
       console.log('something went wrong', error);
@@ -45,8 +46,12 @@ async function ensureRemoteDir(client, remoteDir) {
   });
 }
 
-async function clearRemoteDir(client, remoteDir, baseDir) {
+async function clearRemoteDir(client, remoteDir, baseDir=parseSlashes(process.env.FTP_PUBLIC_FOLDER)) {
   
+  if (!remoteDir.startsWith(baseDir)) {
+    console.log(`Attempt to access outside of base directory: ${remoteDir}`);
+    return Promise.resolve();
+  }
   console.log(`checking directory: ${remoteDir}`);
 
   return new Promise((resolve, reject) => {
@@ -129,5 +134,7 @@ async function uploadFile(client, localFilePath, remoteFilePath) {
     });
   });
 }
+
+
 
 module.exports = {deploy}
