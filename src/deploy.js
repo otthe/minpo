@@ -100,8 +100,34 @@ async function clearRemoteDir(client, remoteDir, baseDir) {
   });
 }
 
-async function uploadToRemoteDir() {
+async function uploadToRemoteDir(client, localDir, remoteDir) {
+  const files = fs.readdirSync(localDir);
+  for (const file of files) {
+    const localFilePath = path.join(localDir, file);
+    const remoteFilePath = path.join(remoteDir, file);
+    const stats = fs.statSync(localFilePath);
 
+    if (stats.isFile()){
+      await uploadFile(client, localFilePath, remoteFilePath);
+    } else if (stats.isDirectory()) {
+      await ensureRemoteDir(client, remoteFilePath);
+      await uploadToRemoteDir(client, localFilePath, remoteFilePath);
+    }
+  }
+}
+
+async function uploadFile(client, localFilePath, remoteFilePath) {
+  return new Promise((resolve, reject) => {
+    client.put(localFilePath, remoteFilePath, (err) => {
+      if (err) {
+        console.log(`failed to upload ${localFilePath} ${err}`);
+        reject(err);
+      }else {
+        console.log(`uploaded ${localFilePath} to ${remoteFilePath}`);
+        resolve();
+      }
+    });
+  });
 }
 
 module.exports = {deploy}
