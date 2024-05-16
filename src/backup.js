@@ -26,7 +26,7 @@ async function backup() {
 function generateTimestamp(){
   const d = new Date();
   const day = d.getDate();
-  const month = 1 + d.getMonth(); //zerobased so we add one to it
+  const month = 1 + d.getMonth(); //zero-based so we add one to it
   const year = d.getFullYear();
   const hour = d.getHours();
   const minutes = d.getMinutes();
@@ -49,7 +49,32 @@ function confirmBackupExistence(backupFolder) {
 
 async function createBackup(distFolder, backupFolder, jsonPath) {
   const timestamp = generateTimestamp();
+
+  const options = {
+   overwrite: true,
+   filter: src => !src.includes('.tmp')
+  };
+
   await fs.mkdir(`./backup/${timestamp}`);
+
+  console.log(backupFolder);
+
+  //backup the files from dist folder
+  await fs.copy(distFolder, `${backupFolder}${timestamp}`, options, (err) => {
+    if (err) {
+      return console.log('error occurred while copying files: ', err);
+    }
+  });
+
+  //backup the site.json from site fodler
+  await fs.copyFile(jsonPath, `${backupFolder}${timestamp}/site.json`, (err) => {
+    if (err) {
+      return console.log('error occurred while copying files: ', err);
+    }
+  });
+
+  console.log("backup created!");
+
 }
 
 module.exports = {backup}
