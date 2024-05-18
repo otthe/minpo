@@ -1,7 +1,7 @@
 {
-  "site_title": "Otto Heiskanen",
-  "site_author": "Otto Heiskanen",
-  "email": "contact@ottoheiskanen.com",
+  "site_title": "Jane Doe",
+  "site_author": "Jane Doe",
+  "email": "janedoe@janedoe.com",
 
   "socials": {
     "Github": "",
@@ -17,11 +17,6 @@
         "title": "My Portfolio",
         "desc": "This site is still in the making"
       }
-    },
-
-    "contact":{
-      "active":true,
-      "subpages":[]
     },
 
     "blog": {
@@ -40,7 +35,7 @@
           "title":"Blog post 2"
         },
         {
-          "active": false,
+          "active": true,
           "title":"Blog post 3"
         },
         {
@@ -48,7 +43,7 @@
           "title":"Blog post 4"
         },
         {
-          "active": true,
+          "active": false,
           "title":"Blog post 5"
         }
       ]
