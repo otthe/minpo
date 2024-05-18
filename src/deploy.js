@@ -1,10 +1,9 @@
 const path = require('path');
 const fs = require('fs-extra');
 require('dotenv').config();
-const {parseSlashes} = require('./helpers/strings.js');
 
 const localDistFolder = path.join(__dirname, '..', '/dist/');
-const remoteDistFolder = process.env.FTP_PUBLIC_FOLDER//String(process.env.FTP_PUBLIC_FOLDER);
+const remoteDistFolder = process.env.FTP_PUBLIC_FOLDER
 
 const config = {
   host: process.env.FTP_HOST,
@@ -26,7 +25,7 @@ async function deploy() {
   await client.on('ready', async function(){
     try {
       await clearRemoteDir(client, remoteDistFolder);
-      await ensureRemoteDir(client, remoteDistFolder); // which one should be called first?
+      await ensureRemoteDir(client, remoteDistFolder);
       await uploadToRemoteDir(client, localDistFolder, remoteDistFolder);
     } catch (error) {
       console.log('something went wrong', error);
@@ -46,7 +45,7 @@ async function ensureRemoteDir(client, remoteDir) {
   });
 }
 
-async function clearRemoteDir(client, remoteDir, baseDir=parseSlashes(process.env.FTP_PUBLIC_FOLDER)) {
+async function clearRemoteDir(client, remoteDir, baseDir=process.env.FTP_PUBLIC_FOLDER) {
   
   if (!remoteDir.startsWith(baseDir)) {
     console.log(`Attempt to access outside of base directory: ${remoteDir}`);
@@ -105,6 +104,12 @@ async function clearRemoteDir(client, remoteDir, baseDir=parseSlashes(process.en
   });
 }
 
+/**
+ * Check the type of files in local dist folder and upload them one by one to FTP
+ * @param {*} client FTP client 
+ * @param {*} localDir Local dist folder
+ * @param {*} remoteDir FTP dist folder
+ */
 async function uploadToRemoteDir(client, localDir, remoteDir) {
   const files = fs.readdirSync(localDir);
   for (const file of files) {
@@ -121,6 +126,13 @@ async function uploadToRemoteDir(client, localDir, remoteDir) {
   }
 }
 
+/**
+ * Upload individual file to FTP
+ * @param {*} client FTP client
+ * @param {*} localFilePath Path to local file
+ * @param {*} remoteFilePath Path to deployed file
+ * @returns 
+ */
 async function uploadFile(client, localFilePath, remoteFilePath) {
   return new Promise((resolve, reject) => {
     client.put(localFilePath, remoteFilePath, (err) => {

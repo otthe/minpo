@@ -31,24 +31,16 @@ const minifyConfig = {
  * @returns 
  */
 function setBaseUrl(location, devMode) {
-  let route = "/";
-  
-  //this is just because when u use apache/nginx/whatever web server locally, usually the project is in the subfolder var/www/html/project
+  let url = "/";
 
-  //.env treats this variable as string so this is kind of hacky solution, might come back to this later
+  console.log("dev mode type:");
+  console.log(typeof devMode);
+
   if (devMode === "true") {
-    if (location.startsWith("/")) {
-      route = location;
-    } else {
-      route = "/" + location;
-    } 
-  } else if (devMode === "false") {
-    route = "/";
-  } else {
-    throw Error("process.env.LOCALHOST should be true or false!");
+    url = String(location);
   }
-
-  return route;
+  console.log(url);
+  return url;
 }
 
 /**
