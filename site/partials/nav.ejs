@@ -1,0 +1,15 @@
+<div id="nav">
+  <ul>
+    <% Object.keys(pages).forEach(function(key) { %>
+      <% if (pages[key].active) { %>
+        <li><a href="<%= `./${key}.html` %>"><%= key %></a></li>
+      <% } %>
+    <% }); %>
+
+    <% Object.keys(socials).forEach(function(key) { %>
+      <% if (socials[key] !== "") { %>
+        <li><a href="https://<%= socials[key] %>"><%= key %></a></li>
+      <% } %>
+    <% }); %>
+  </ul>
+</div>
