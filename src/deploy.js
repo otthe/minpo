@@ -12,6 +12,9 @@ const config = {
   password: process.env.FTP_PASSWORD
 }
 
+/**
+ * Deploy the content of dist folder to FTP server
+ */
 async function deploy() {
   console.log("DEPLOYING VIA FTP!");
   console.log(localDistFolder);
@@ -36,6 +39,12 @@ async function deploy() {
   client.connect(config);
 }
 
+/**
+ * Ensures the existence of remote dir, if it doesn't exist create one
+ * @param {*} client FTP client 
+ * @param {*} remoteDir Path to remote dir
+ * @returns 
+ */
 async function ensureRemoteDir(client, remoteDir) {
   return new Promise((resolve, reject) => {
     client.mkdir(remoteDir, true, (err) => {
@@ -45,6 +54,13 @@ async function ensureRemoteDir(client, remoteDir) {
   });
 }
 
+/**
+ * Recursively checks for files on public folder on FTP server and deletes them
+ * @param {*} client FTP client
+ * @param {*} remoteDir Public folder on FTP server
+ * @param {*} baseDir Name of public folder
+ * @returns 
+ */
 async function clearRemoteDir(client, remoteDir, baseDir=process.env.FTP_PUBLIC_FOLDER) {
   
   if (!remoteDir.startsWith(baseDir)) {

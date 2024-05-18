@@ -1,6 +1,9 @@
 const path = require('path');
 const fs = require('fs-extra');
 
+/**
+ * Creates a timestamped backup of the contents of dist folder and site.json
+ */
 async function backup() {
   console.log("CREATING A BACKUP!");
   console.log(generateTimestamp());
@@ -23,6 +26,10 @@ async function backup() {
 
 }
 
+/**
+ * Generates timestamp for the backup folder name
+ * @returns timestamp (Y-M-D-H-M-S)
+ */
 function generateTimestamp(){
   const d = new Date();
   const day = d.getDate();
@@ -36,6 +43,10 @@ function generateTimestamp(){
   return timestamp;
 }
 
+/**
+ * Checks the existence of backup folder, if it doesn't exist create one
+ * @param {*} backupFolder Location of backup folder 
+ */
 function confirmBackupExistence(backupFolder) {
   const backupFolderExists = fs.existsSync(backupFolder);
   if (!backupFolderExists) {
@@ -47,6 +58,12 @@ function confirmBackupExistence(backupFolder) {
   }
 }
 
+/**
+ * Copies the files from dist folder to new timestamped folder inside backup folder
+ * @param {*} distFolder Location of dist folder
+ * @param {*} backupFolder Location of backup folder
+ * @param {*} jsonPath Path to site.json file 
+ */
 async function createBackup(distFolder, backupFolder, jsonPath) {
   const timestamp = generateTimestamp();
 
